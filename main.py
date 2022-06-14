@@ -1,13 +1,19 @@
 from socket import *
 import threading
+import urllib
 import os
 serverPort = 5050
 
 def startServer():
     os.system("wget -q -c -nc https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip")
     os.system("unzip -qq -n ngrok-stable-linux-amd64.zip")
-    os.system("ngrok authtoken ")
-    os.system("")
+    os.system("ngrok authtoken 2AZ6Q4rkOlX4Lk8Wyl2p6LeSzm5_86zUyKaEBTBdMDf9nrQjV")
+    os.system("ngrok tcp 5050")
+    
+    with urllib.request.urlopen('http://localhost:4040/api/tunnels') as response:
+        data = json.loads(response.read().decode())
+        (host, port) = data['tunnels'][0]['public_url'][6:].split(':')
+    
     
     
 serverSocket = socket(AF_INET, SOCK_DGRAM)
